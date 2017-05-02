@@ -1,0 +1,78 @@
+<script>
+	class States{
+		constructor(){
+			this.allPossibilites = [];
+		}
+		newState(tmpState,i,j,player){
+			var length = tmpState.length;
+			var stateGame = [];
+			for (var idx = 0; idx < length; idx++)
+			    stateGame[idx] = tmpState[idx].slice();
+			stateGame[i][j] = player;
+			this.allPossibilites.push(stateGame);
+		}
+		getStates(){
+			return this.allPossibilites;
+		}
+	}
+
+	function createArray(size) {
+		var gameBoard = new Array(size);
+		for (var i = 0; i < size; i++) 
+			gameBoard[i] = new Array(size);
+		for (var i = 0; i < size; i++) 
+			for (var j = 0; j < size; j++)
+				gameBoard[i][j] = -1; 
+		return gameBoard;
+	}
+
+	function turnX(tmpState) {
+		var lengthTmp = tmpState.length;
+		var states = new States();
+		var state;
+		if (tmpState.length == 0) {
+			return ;
+		}
+		for (var idx = 0; idx < lengthTmp; idx++){
+			state = tmpState[idx].slice();
+			var lengthState = state.length;
+			for (var i = 0; i < lengthState; i++)
+				for (var j = 0; j < lengthState; j++)
+					if (state[i][j] == -1)
+						states.newState(state,i,j,'x');
+		}
+		turnO(states.getStates());
+	}
+
+	function turnO(tmpState) {
+		var lengthTmp = tmpState.length;
+		var states = new States();
+		var state;
+		if (tmpState.length == 0) {
+			return ;
+		}
+		for (var idx = 0; idx < lengthTmp; idx++){
+			state = tmpState[idx].slice();
+			var lengthState = state.length;
+			for (var i = 0; i < lengthState; i++)
+				for (var j = 0; j < lengthState; j++)
+					if (state[i][j] == -1)
+						states.newState(state,i,j,'o');
+		}
+		turnX(states.getStates());
+	}
+
+	function treePossibilities(gameBoard){
+		var length = gameBoard.length;
+		var states = new States();
+		for (var i = 0; i < length; i++)
+			for (var j = 0; j < length; j++)
+				if (gameBoard[i][j] == -1)
+					states.newState(gameBoard,i,j,'o');
+		turnX(states.getStates());
+	}
+
+	var gameBoard = createArray(3);
+	gameBoard[1][1] = 'x';
+	treePossibilities(gameBoard);
+</script>
